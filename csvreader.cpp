@@ -66,6 +66,10 @@ private:
 			{
 				throw length_error(string("Line ") + to_string(currlinenumber) + string(" size is greater than the number of features"));
 			}
+			catch (invalid_argument &e)
+			{
+				throw invalid_argument(e.what() + string(" met during the reading of line " + to_string(currlinenumber)));
+			}
 			if (currlinesize < datawidth)
 			{
 				throw length_error(string("Line ") + to_string(currlinenumber) + string(" size is less than the number of features"));
@@ -92,6 +96,11 @@ public:
 			cout << e.what() << endl;
 			in.close();
 		}
+		catch (invalid_argument &e)
+		{
+			cout << e.what() << endl;
+			in.close();
+		}
 		in.close();
 		return df;
 	}
@@ -100,7 +109,7 @@ public:
 int main()
 {
 	CSVReader csvreader;
-	dataframe df = csvreader.read("successful_example.csv", ',');
+	dataframe df = csvreader.read("invargexception_example.csv", ',');
 
 	for (auto namesit = df.first.begin(), namesend = df.first.end(); namesit != namesend; ++namesit)
 		cout << *namesit << ' ';
